@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  background:
+    radial-gradient(circle at top, rgba(0, 0, 0, 0.06), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f6f6f6 56%, #ededed 100%);
+}
+
+body {
+  min-height: 100vh;
+  color: #0f172a;
+  background: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+@keyframes loginCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card-enter {
+  animation: loginCardFadeIn 420ms ease-out both;
+}

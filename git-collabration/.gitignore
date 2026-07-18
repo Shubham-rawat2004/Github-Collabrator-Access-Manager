@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.local
+.env.*.local
+coverage
+dist
+*.log
+prisma/dev.db
+prisma/dev.db-journal
+pnpm-lock.yaml
+yarn.lock
+*.tsbuildinfo

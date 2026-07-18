@@ -1,0 +1,99 @@
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '3615884629'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '665618097'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '665618097'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '665618097'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '3615884629'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '3615884629'
+}
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  digest: '2901574780'
+}
+ ⨯ Error: Could not find the module "C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '3615884629'
+}
+[TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  page: '/offboarding'
+}
+ ⨯ Error: Cannot find module './331.js'
+Require stack:
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\webpack-runtime.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\pages\_document.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\require.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\load-components.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\utils.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\options.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\index.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\next.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\offboarding\page.js:2:11169)
+    at Object.<anonymous> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\offboarding\page.js:2:11230) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/offboarding'
+}
+ ⨯ Error: Cannot find module './331.js'
+Require stack:
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\webpack-runtime.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\pages\_document.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\require.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\load-components.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\utils.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\options.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\index.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\next.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\offboarding\page.js:2:11169)
+    at Object.<anonymous> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\offboarding\page.js:2:11230) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/offboarding'
+}
+ ⨯ Error: Cannot find module './331.js'
+Require stack:
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\webpack-runtime.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\pages\_document.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\require.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\load-components.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\utils.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\options.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\swc\index.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\config.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\next.js
+- C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\page.js:2:7413)
+    at Object.<anonymous> (C:\Users\shub1\Github-Collaborator-Access-Manager\git-collabration\.next\server\app\page.js:2:7467) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/'
+}

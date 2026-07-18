@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SyncJobStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  PARTIAL_SUCCESS
+}
+
+enum RemovalRequestStatus {
+  PENDING
+  EXECUTING
+  EXECUTED
+  FAILED
+  CANCELLED
+}
+
+enum ApprovalRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Employee {
+  id         String       @id @default(uuid()) @db.Uuid
+  fullName   String       @map("full_name")
+  email      String?
+  department String?
+  isActive   Boolean      @default(true) @map("is_active")
+  notes      String?
+  githubUsers GithubUser[]
+  offboardingJobs OffboardingJob[]
+  bulkOffboardingBatchItems BulkOffboardingBatchItem[]
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+
+  @@index([fullName], map: "idx_employee_name")
+  @@map("employees")
+}
+
+model GithubUser {
+  id               String              @id @default(uuid()) @db.Uuid
+  githubId         BigInt?             @map("github_id")
+  githubUsername   String              @unique @map("github_username")
+  githubProfileUrl String?             @map("github_profile_url")
+  employeeId       String?             @map("employee_id") @db.Uuid
+  employee         Employee?           @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  repositoryAccess RepositoryAccess[]
+  removalRequests   RemovalRequest[]
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+
+  @@index([githubUsername], map: "idx_github_username")
+  @@map("github_users")
+}
+
+model Repository {
+  id              String              @id @default(uuid()) @db.Uuid
+  githubRepoId    BigInt?             @unique @map("github_repo_id")
+  name            String
+  fullName        String              @map("full_name")
+  description     String?
+  liveUrl         String?             @map("live_url")
+  visibility      String?
+  defaultBranch   String?             @map("default_branch")
+  archived        Boolean             @default(false)
+  isActive        Boolean             @default(true) @map("is_active")
+  lastSyncedAt    DateTime?           @map("last_synced_at")
+  repositoryAccess RepositoryAccess[]
+  syncJobDetails   SyncJobDetail[]
+  removalRequests  RemovalRequest[]
+  offboardingJobItems OffboardingJobItem[]
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+
+  @@index([name], map: "idx_repository_name")
+  @@map("repositories")
+}
+
+model RepositoryAccess {
+  id            String        @id @default(uuid()) @db.Uuid
+  repositoryId  String        @map("repository_id") @db.Uuid
+  githubUserId  String        @map("github_user_id") @db.Uuid
+  permission    String?
+  source        String        @default("direct")
+  syncedAt      DateTime?     @map("synced_at")
+  repository    Repository    @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  githubUser    GithubUser    @relation(fields: [githubUserId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@unique([repositoryId, githubUserId])
+  @@index([githubUserId], map: "idx_repository_access_user")
+  @@index([repositoryId], map: "idx_repository_access_repo")
+  @@map("repository_access")
+}
+
+model SyncJob {
+  id                  String          @id @default(uuid()) @db.Uuid
+  startedAt           DateTime?       @map("started_at")
+  completedAt         DateTime?       @map("completed_at")
+  status              SyncJobStatus
+  initiatedBy         String?         @map("initiated_by")
+  repositoriesScanned Int             @default(0) @map("repositories_scanned")
+  collaboratorsFound  Int             @default(0) @map("collaborators_found")
+  errorCount          Int             @default(0) @map("error_count")
+  errorMessage        String?         @map("error_message")
+  details             SyncJobDetail[]
+  createdAt           DateTime        @default(now()) @map("created_at")
+
+  @@map("sync_jobs")
+}
+
+model SyncJobDetail {
+  id            String      @id @default(uuid()) @db.Uuid
+  syncJobId     String?     @map("sync_job_id") @db.Uuid
+  repositoryId  String?     @map("repository_id") @db.Uuid
+  status        String?
+  errorMessage  String?     @map("error_message")
+  syncJob       SyncJob?    @relation(fields: [syncJobId], references: [id], onDelete: Cascade)
+  repository    Repository? @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("sync_job_details")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  actionType   String   @map("action_type")
+  entityType   String   @map("entity_type")
+  entityId     String?  @map("entity_id") @db.Uuid
+  performedBy  String?  @map("performed_by")
+  details      Json?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}
+
+model RemovalRequest {
+  id           String             @id @default(uuid()) @db.Uuid
+  githubUserId String?            @map("github_user_id") @db.Uuid
+  repositoryId String?            @map("repository_id") @db.Uuid
+  status       RemovalRequestStatus
+  requestedBy  String?            @map("requested_by")
+  reason       String?
+  executedAt   DateTime?          @map("executed_at")
+  githubUser   GithubUser?         @relation(fields: [githubUserId], references: [id], onDelete: SetNull)
+  repository   Repository?        @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  createdAt    DateTime            @default(now()) @map("created_at")
+
+  @@map("removal_requests")
+}
+
+model OffboardingJob {
+  id                    String               @id @default(uuid()) @db.Uuid
+  employeeId            String?              @map("employee_id") @db.Uuid
+  status                String?
+  repositoriesTotal     Int                  @default(0) @map("repositories_total")
+  repositoriesProcessed Int                  @default(0) @map("repositories_processed")
+  repositoriesFailed    Int                  @default(0) @map("repositories_failed")
+  startedAt             DateTime?            @map("started_at")
+  completedAt           DateTime?            @map("completed_at")
+  employee              Employee?            @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  items                 OffboardingJobItem[]
+  bulkOffboardingBatchItem BulkOffboardingBatchItem?
+  createdAt             DateTime             @default(now()) @map("created_at")
+
+  @@map("offboarding_jobs")
+}
+
+model OffboardingJobItem {
+  id               String          @id @default(uuid()) @db.Uuid
+  offboardingJobId String?         @map("offboarding_job_id") @db.Uuid
+  repositoryId     String?         @map("repository_id") @db.Uuid
+  status           String?
+  errorMessage     String?        @map("error_message")
+  offboardingJob   OffboardingJob? @relation(fields: [offboardingJobId], references: [id], onDelete: Cascade)
+  repository       Repository?     @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  createdAt        DateTime        @default(now()) @map("created_at")
+
+  @@map("offboarding_job_items")
+}
+
+model ApprovalRequest {
+  id          String               @id @default(uuid()) @db.Uuid
+  requestType String?              @map("request_type")
+  referenceId String?              @map("reference_id")
+  status      ApprovalRequestStatus
+  requestedBy String?              @map("requested_by")
+  approvedBy  String?              @map("approved_by")
+  approvedAt  DateTime?            @map("approved_at")
+  bulkOffboardingBatch BulkOffboardingBatch?
+  createdAt   DateTime             @default(now()) @map("created_at")
+
+  @@map("approval_requests")
+}
+
+model BulkOffboardingBatch {
+  id               String                    @id @default(uuid()) @db.Uuid
+  approvalRequestId String?                   @unique @map("approval_request_id") @db.Uuid
+  requestedBy      String?                   @map("requested_by")
+  reason           String?
+  status           String                    @default("PENDING_APPROVAL")
+  executedBy       String?                   @map("executed_by")
+  approvedAt       DateTime?                 @map("approved_at")
+  executedAt       DateTime?                 @map("executed_at")
+  rejectionReason  String?                   @map("rejection_reason")
+  approvalRequest  ApprovalRequest?          @relation(fields: [approvalRequestId], references: [id], onDelete: SetNull)
+  items            BulkOffboardingBatchItem[]
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  updatedAt        DateTime                  @updatedAt @map("updated_at")
+
+  @@map("bulk_offboarding_batches")
+}
+
+model BulkOffboardingBatchItem {
+  id                    String              @id @default(uuid()) @db.Uuid
+  bulkOffboardingBatchId String              @map("bulk_offboarding_batch_id") @db.Uuid
+  employeeId            String              @map("employee_id") @db.Uuid
+  offboardingJobId      String?             @unique @map("offboarding_job_id") @db.Uuid
+  status                String              @default("PENDING")
+  errorMessage          String?             @map("error_message")
+  bulkOffboardingBatch  BulkOffboardingBatch @relation(fields: [bulkOffboardingBatchId], references: [id], onDelete: Cascade)
+  employee              Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  offboardingJob        OffboardingJob?     @relation(fields: [offboardingJobId], references: [id], onDelete: SetNull)
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  @@map("bulk_offboarding_batch_items")
+}
