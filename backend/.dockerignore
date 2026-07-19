@@ -1,0 +1,8 @@
+.idea/
+.git/
+Dockerfile
+.dockerignore
+*.log
+HELP.md
+package-lock.json
+node_modules/
