@@ -6,7 +6,6 @@
 databases:
   - name: gcam-postgres
     databaseName: git_collabration
-    user: postgres
     plan: free
 
 services:
