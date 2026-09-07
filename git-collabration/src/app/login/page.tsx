@@ -32,6 +32,7 @@ export default async function LoginPage({
   const params = await searchParams;
   const from = params?.from ?? "/";
   const showInvalidCredentials = params?.error === "invalid";
+  const showUnconfiguredCredentials = params?.error === "unconfigured";
 
   return (
     <main className="relative min-h-screen bg-[#F5F5F4] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,#F5F5F4_100%)] px-4 py-8 flex items-center justify-center font-sans">
@@ -54,6 +55,14 @@ export default async function LoginPage({
               className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 shadow-sm text-center"
             >
               Incorrect username or password. Please try again.
+            </div>
+          ) : null}
+          {showUnconfiguredCredentials ? (
+            <div
+              role="alert"
+              className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800 shadow-sm text-center"
+            >
+              Admin credentials are not configured in environment variables.
             </div>
           ) : null}
           <div className="mt-8 grid gap-4 text-left">

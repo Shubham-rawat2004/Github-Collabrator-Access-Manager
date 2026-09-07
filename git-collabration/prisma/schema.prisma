@@ -7,27 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum SyncJobStatus {
-  PENDING
-  RUNNING
-  SUCCESS
-  FAILED
-  PARTIAL_SUCCESS
-}
-
-enum RemovalRequestStatus {
-  PENDING
-  EXECUTING
-  EXECUTED
-  FAILED
-  CANCELLED
-}
-
-enum ApprovalRequestStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
 
 model Employee {
   id         String       @id @default(uuid()) @db.Uuid
@@ -107,7 +86,7 @@ model SyncJob {
   id                  String          @id @default(uuid()) @db.Uuid
   startedAt           DateTime?       @map("started_at")
   completedAt         DateTime?       @map("completed_at")
-  status              SyncJobStatus
+  status              String
   initiatedBy         String?         @map("initiated_by")
   repositoriesScanned Int             @default(0) @map("repositories_scanned")
   collaboratorsFound  Int             @default(0) @map("collaborators_found")
@@ -148,7 +127,7 @@ model RemovalRequest {
   id           String             @id @default(uuid()) @db.Uuid
   githubUserId String?            @map("github_user_id") @db.Uuid
   repositoryId String?            @map("repository_id") @db.Uuid
-  status       RemovalRequestStatus
+  status       String
   requestedBy  String?            @map("requested_by")
   reason       String?
   executedAt   DateTime?          @map("executed_at")
@@ -193,7 +172,7 @@ model ApprovalRequest {
   id          String               @id @default(uuid()) @db.Uuid
   requestType String?              @map("request_type")
   referenceId String?              @map("reference_id")
-  status      ApprovalRequestStatus
+  status      String
   requestedBy String?              @map("requested_by")
   approvedBy  String?              @map("approved_by")
   approvedAt  DateTime?            @map("approved_at")
