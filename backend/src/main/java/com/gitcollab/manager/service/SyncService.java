@@ -90,7 +90,8 @@ public class SyncService {
                     "repositoriesProcessed", 0,
                     "collaboratorsProcessed", 0,
                     "errors", 1,
-                    "status", "FAILED"
+                    "status", "FAILED",
+                    "errorMessage", "GitHub repository fetching failed: " + e.getMessage()
             );
         }
 

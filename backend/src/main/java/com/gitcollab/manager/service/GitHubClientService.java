@@ -20,7 +20,7 @@ public class GitHubClientService {
 
     private final String baseUrl = "https://api.github.com";
 
-    @Value("${GITHUB_PAT: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}")
+    @Value("${GITHUB_PAT:${github.pat:}}")
     private String token;
 
     @Autowired
@@ -32,7 +32,7 @@ public class GitHubClientService {
 
     private HttpRequest.Builder buildBaseRequest(String path) {
         if (token == null || token.trim().isEmpty()) {
-            throw new IllegalStateException("GITHUB_PAT is required to sync data from GitHub.");
+            throw new IllegalStateException("GITHUB_PAT is not set. Please set the GITHUB_PAT environment variable in your Render dashboard under Environment Groups -> gcam-shared.");
         }
 
         return HttpRequest.newBuilder()

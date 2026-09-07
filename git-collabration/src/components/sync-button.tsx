@@ -55,8 +55,8 @@ export function SyncButton() {
 
       const payload = await response.json();
 
-      if (!response.ok) {
-        throw new Error(payload.error ?? "Sync failed");
+      if (!response.ok || payload.success === false) {
+        throw new Error(payload.errorMessage ?? payload.error ?? "Sync failed");
       }
 
       setMessage({
