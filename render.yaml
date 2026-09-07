@@ -65,10 +65,7 @@ services:
           name: gcam-postgres
           property: connectionString
       - key: SPRING_BOOT_URL
-        fromService:
-          type: web
-          name: gcam-backend
-          property: host
+        value: https://gcam-backend.onrender.com
 
 # =============================================================================
 # Shared Environment Variables Group

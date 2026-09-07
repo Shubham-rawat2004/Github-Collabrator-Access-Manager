@@ -32,18 +32,33 @@ export type BulkOffboardingBatchWithRelations = BulkOffboardingBatch & {
 };
 
 export async function listOffboardingJobs(limit = 25): Promise<OffboardingJobWithRelations[]> {
-  const result = await fetchBackend<{ offboardingJobs: OffboardingJobWithRelations[] }>("/api/offboarding/jobs");
-  return result.offboardingJobs.slice(0, limit);
+  try {
+    const result = await fetchBackend<{ offboardingJobs: OffboardingJobWithRelations[] }>("/api/offboarding/jobs");
+    return result?.offboardingJobs ? result.offboardingJobs.slice(0, limit) : [];
+  } catch (error) {
+    console.error("Failed to list offboarding jobs:", error);
+    return [];
+  }
 }
 
 export async function listRemovalRequests(limit = 25): Promise<RemovalRequestWithRelations[]> {
-  const result = await fetchBackend<{ removalRequests: RemovalRequestWithRelations[] }>("/api/removal-requests");
-  return result.removalRequests.slice(0, limit);
+  try {
+    const result = await fetchBackend<{ removalRequests: RemovalRequestWithRelations[] }>("/api/removal-requests");
+    return result?.removalRequests ? result.removalRequests.slice(0, limit) : [];
+  } catch (error) {
+    console.error("Failed to list removal requests:", error);
+    return [];
+  }
 }
 
 export async function listBulkOffboardingBatches(limit = 25): Promise<BulkOffboardingBatchWithRelations[]> {
-  const result = await fetchBackend<{ bulkBatches: BulkOffboardingBatchWithRelations[] }>("/api/offboarding/bulk");
-  return result.bulkBatches.slice(0, limit);
+  try {
+    const result = await fetchBackend<{ bulkBatches: BulkOffboardingBatchWithRelations[] }>("/api/offboarding/bulk");
+    return result?.bulkBatches ? result.bulkBatches.slice(0, limit) : [];
+  } catch (error) {
+    console.error("Failed to list bulk offboarding batches:", error);
+    return [];
+  }
 }
 
 export async function createOffboardingJob(

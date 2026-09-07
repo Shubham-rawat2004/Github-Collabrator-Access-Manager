@@ -15,7 +15,8 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get("gcam_session")?.value;
   if (!token) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/login";
     loginUrl.searchParams.set("from", pathname);
     return NextResponse.redirect(loginUrl);
   }

@@ -9,8 +9,13 @@ export type CollaboratorWithAccess = GithubUser & {
 };
 
 export async function listCollaborators(search = ""): Promise<CollaboratorWithAccess[]> {
-  const result = await fetchBackend<{ collaborators: CollaboratorWithAccess[] }>(
-    `/api/collaborators?q=${encodeURIComponent(search)}`
-  );
-  return result.collaborators;
+  try {
+    const result = await fetchBackend<{ collaborators: CollaboratorWithAccess[] }>(
+      `/api/collaborators?q=${encodeURIComponent(search)}`
+    );
+    return result.collaborators ?? [];
+  } catch (error) {
+    console.error("Failed to list collaborators:", error);
+    return [];
+  }
 }

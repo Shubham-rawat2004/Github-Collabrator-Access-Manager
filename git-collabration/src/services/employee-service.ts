@@ -10,12 +10,22 @@ export type EmployeeWithRelations = Employee & {
 };
 
 export async function listEmployees(search = ""): Promise<EmployeeWithRelations[]> {
-  const result = await fetchBackend<{ employees: EmployeeWithRelations[] }>(`/api/employees?q=${encodeURIComponent(search)}`);
-  return result.employees;
+  try {
+    const result = await fetchBackend<{ employees: EmployeeWithRelations[] }>(`/api/employees?q=${encodeURIComponent(search)}`);
+    return result.employees ?? [];
+  } catch (error) {
+    console.error("Failed to list employees:", error);
+    return [];
+  }
 }
 
 export async function getEmployeeById(id: string): Promise<EmployeeWithRelations | null> {
-  return fetchBackend<EmployeeWithRelations | null>(`/api/employees/${id}`);
+  try {
+    return await fetchBackend<EmployeeWithRelations | null>(`/api/employees/${id}`);
+  } catch (error) {
+    console.error(`Failed to fetch employee ${id}:`, error);
+    return null;
+  }
 }
 
 export async function createEmployee(input: {

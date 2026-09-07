@@ -19,10 +19,15 @@ export async function listRepositories(
   search = "",
   visibility: RepositoryVisibilityFilter = "all"
 ): Promise<Repository[]> {
-  const result = await fetchBackend<{ repositories: Repository[] }>(
-    `/api/repositories?q=${encodeURIComponent(search)}&visibility=${visibility}`
-  );
-  return result.repositories;
+  try {
+    const result = await fetchBackend<{ repositories: Repository[] }>(
+      `/api/repositories?q=${encodeURIComponent(search)}&visibility=${visibility}`
+    );
+    return result.repositories ?? [];
+  } catch (error) {
+    console.error("Failed to list repositories:", error);
+    return [];
+  }
 }
 
 export async function getRepositoryMetrics(): Promise<{
@@ -32,17 +37,43 @@ export async function getRepositoryMetrics(): Promise<{
   syncJobs: number;
   lastSyncJob: any;
 }> {
-  return fetchBackend<any>("/api/repositories/metrics");
+  try {
+    return await fetchBackend<any>("/api/repositories/metrics");
+  } catch (error) {
+    console.error("Failed to fetch repository metrics:", error);
+    return {
+      repositories: 0,
+      collaborators: 0,
+      accessRows: 0,
+      syncJobs: 0,
+      lastSyncJob: null
+    };
+  }
 }
 
 export async function listRepositoryAccess(repositoryId: string): Promise<RepositoryAccessWithUser[]> {
-  return fetchBackend<RepositoryAccessWithUser[]>(`/api/repositories/${repositoryId}/access`);
+  try {
+    return await fetchBackend<RepositoryAccessWithUser[]>(`/api/repositories/${repositoryId}/access`);
+  } catch (error) {
+    console.error(`Failed to fetch access for repo ${repositoryId}:`, error);
+    return [];
+  }
 }
 
 export async function getRepositoryById(id: string): Promise<RepositoryWithAccessAndUser | null> {
-  return fetchBackend<RepositoryWithAccessAndUser | null>(`/api/repositories/${id}`);
+  try {
+    return await fetchBackend<RepositoryWithAccessAndUser | null>(`/api/repositories/${id}`);
+  } catch (error) {
+    console.error(`Failed to fetch repo ${id}:`, error);
+    return null;
+  }
 }
 
 export async function getRepositoryByIdentifier(identifier: string): Promise<RepositoryWithAccessAndUser | null> {
-  return fetchBackend<RepositoryWithAccessAndUser | null>(`/api/repositories/${identifier}`);
+  try {
+    return await fetchBackend<RepositoryWithAccessAndUser | null>(`/api/repositories/${identifier}`);
+  } catch (error) {
+    console.error(`Failed to fetch repo identifier ${identifier}:`, error);
+    return null;
+  }
 }

@@ -2,13 +2,23 @@ import { fetchBackend } from "@/lib/backend";
 import { ApprovalRequest } from "@prisma/client";
 
 export async function listAuditLogs(limit = 50): Promise<any[]> {
-  const result = await fetchBackend<{ auditLogs: any[] }>("/api/governance/audit-logs");
-  return result.auditLogs.slice(0, limit);
+  try {
+    const result = await fetchBackend<{ auditLogs: any[] }>("/api/governance/audit-logs");
+    return result?.auditLogs ? result.auditLogs.slice(0, limit) : [];
+  } catch (error) {
+    console.error("Failed to list audit logs:", error);
+    return [];
+  }
 }
 
 export async function listApprovalRequests(limit = 50): Promise<ApprovalRequest[]> {
-  const result = await fetchBackend<{ approvalRequests: ApprovalRequest[] }>("/api/governance/approvals");
-  return result.approvalRequests.slice(0, limit);
+  try {
+    const result = await fetchBackend<{ approvalRequests: ApprovalRequest[] }>("/api/governance/approvals");
+    return result?.approvalRequests ? result.approvalRequests.slice(0, limit) : [];
+  } catch (error) {
+    console.error("Failed to list approval requests:", error);
+    return [];
+  }
 }
 
 export async function createApprovalRequest(input: {
