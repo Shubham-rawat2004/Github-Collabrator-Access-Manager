@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entity-Relationship Diagram | GitHub Collaborator Access Manager</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --success: #34d399;
+      --warning: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .title-group h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .title-group p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .stats-badges {
+      display: flex;
+      gap: 12px;
+    }
+    .badge {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge span { color: var(--accent); font-weight: 700; }
+    .badge.green {
+      background: rgba(52, 211, 153, 0.1);
+      border-color: rgba(52, 211, 153, 0.25);
+    }
+    .badge.green span { color: var(--success); }
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    button {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+    }
+    #diagram-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: radial-gradient(#1e293b 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow: hidden;
+    }
+    #mermaid-target {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #mermaid-target svg {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .legend {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(30, 41, 59, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.75rem;
+      z-index: 5;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .legend-title {
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      color: var(--text-muted);
+    }
+    .legend-symbol {
+      font-family: monospace;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-group">
+      <h1>📊 PostgreSQL Entity-Relationship Diagram</h1>
+      <p>Database: <strong>git_collabration</strong> (Port 5433 / PostgreSQL 16 Alpine)</p>
+    </div>
+    <div class="stats-badges">
+      <div class="badge">Tables: <span>13</span></div>
+      <div class="badge green">Live Rows: <span>96</span></div>
+      <div class="badge">FK Relations: <span>14</span></div>
+    </div>
+    <div class="controls">
+      <button onclick="panZoom.zoomIn()">➕ Zoom In</button>
+      <button onclick="panZoom.zoomOut()">➖ Zoom Out</button>
+      <button onclick="panZoom.reset()">↺ Reset View</button>
+    </div>
+  </header>
+
+  <div id="diagram-container">
+    <div id="mermaid-target">
+      <div class="mermaid">
+erDiagram
+    employees ||--o{ github_users : "1:N (employee_id)"
+    employees ||--o{ offboarding_jobs : "1:N (employee_id)"
+    employees ||--o{ bulk_offboarding_batch_items : "1:N (employee_id)"
+
+    github_users ||--o{ repository_access : "1:N (github_user_id)"
+    github_users ||--o{ removal_requests : "1:N (github_user_id)"
+
+    repositories ||--o{ repository_access : "1:N (repository_id)"
+    repositories ||--o{ sync_job_details : "1:N (repository_id)"
+    repositories ||--o{ removal_requests : "1:N (repository_id)"
+    repositories ||--o{ offboarding_job_items : "1:N (repository_id)"
+
+    sync_jobs ||--o{ sync_job_details : "1:N CASCADE (sync_job_id)"
+
+    offboarding_jobs ||--o{ offboarding_job_items : "1:N CASCADE (offboarding_job_id)"
+    offboarding_jobs ||--o| bulk_offboarding_batch_items : "1:1 (offboarding_job_id)"
+
+    approval_requests ||--o| bulk_offboarding_batches : "1:1 (approval_request_id)"
+    bulk_offboarding_batches ||--o{ bulk_offboarding_batch_items : "1:N CASCADE (bulk_offboarding_batch_id)"
+
+    employees {
+        uuid id PK "1 record"
+        varchar full_name "NOT NULL"
+        varchar email "NULL"
+        varchar department "NULL"
+        boolean is_active "DEFAULT true"
+        text notes "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    github_users {
+        uuid id PK "4 records"
+        bigint github_id "NULL"
+        varchar github_username UK "NOT NULL"
+        varchar github_profile_url "NULL"
+        uuid employee_id FK "REFERENCES employees(id)"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    repositories {
+        uuid id PK "10 records"
+        bigint github_repo_id UK "NULL"
+        varchar name "NOT NULL"
+        varchar full_name "NOT NULL"
+        text description "NULL"
+        varchar live_url "NULL"
+        varchar visibility "NULL"
+        varchar default_branch "NULL"
+        boolean archived "DEFAULT false"
+        boolean is_active "DEFAULT true"
+        timestamp last_synced_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    repository_access {
+        uuid id PK "13 records (M:N junction)"
+        uuid repository_id FK "REFERENCES repositories(id)"
+        uuid github_user_id FK "REFERENCES github_users(id)"
+        varchar permission "admin, push, pull"
+        varchar source "DEFAULT direct"
+        timestamp synced_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    sync_jobs {
+        uuid id PK "6 records"
+        varchar status "NOT NULL"
+        varchar initiated_by "NULL"
+        integer repositories_scanned "DEFAULT 0"
+        integer collaborators_found "DEFAULT 0"
+        integer error_count "DEFAULT 0"
+        text error_message "NULL"
+        timestamp started_at "NULL"
+        timestamp completed_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    sync_job_details {
+        uuid id PK "46 records"
+        uuid sync_job_id FK "CASCADE REFERENCES sync_jobs(id)"
+        uuid repository_id FK "REFERENCES repositories(id)"
+        varchar status "NULL"
+        text error_message "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    approval_requests {
+        uuid id PK "0 records"
+        varchar request_type "NULL"
+        varchar reference_id "NULL"
+        varchar status "NOT NULL"
+        varchar requested_by "NULL"
+        varchar approved_by "NULL"
+        timestamp approved_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    bulk_offboarding_batches {
+        uuid id PK "0 records"
+        uuid approval_request_id FK,UK "REFERENCES approval_requests(id)"
+        varchar requested_by "NULL"
+        varchar reason "NULL"
+        varchar status "DEFAULT PENDING_APPROVAL"
+        varchar executed_by "NULL"
+        varchar rejection_reason "NULL"
+        timestamp approved_at "NULL"
+        timestamp executed_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    bulk_offboarding_batch_items {
+        uuid id PK "0 records"
+        uuid bulk_offboarding_batch_id FK "CASCADE REFERENCES bulk_offboarding_batches(id)"
+        uuid employee_id FK "CASCADE REFERENCES employees(id)"
+        uuid offboarding_job_id FK,UK "REFERENCES offboarding_jobs(id)"
+        varchar status "DEFAULT PENDING"
+        text error_message "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    offboarding_jobs {
+        uuid id PK "0 records"
+        uuid employee_id FK "REFERENCES employees(id)"
+        varchar status "NULL"
+        integer repositories_total "DEFAULT 0"
+        integer repositories_processed "DEFAULT 0"
+        integer repositories_failed "DEFAULT 0"
+        timestamp started_at "NULL"
+        timestamp completed_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    offboarding_job_items {
+        uuid id PK "0 records"
+        uuid offboarding_job_id FK "CASCADE REFERENCES offboarding_jobs(id)"
+        uuid repository_id FK "REFERENCES repositories(id)"
+        varchar status "NULL"
+        text error_message "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    removal_requests {
+        uuid id PK "0 records"
+        uuid github_user_id FK "REFERENCES github_users(id)"
+        uuid repository_id FK "REFERENCES repositories(id)"
+        varchar status "NOT NULL"
+        varchar requested_by "NULL"
+        varchar reason "NULL"
+        timestamp executed_at "NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    audit_logs {
+        uuid id PK "16 records (Standalone)"
+        varchar action_type "NOT NULL"
+        varchar entity_type "NOT NULL"
+        uuid entity_id "NULL"
+        varchar performed_by "NULL"
+        jsonb details "JSON event payload"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-title">Relationship Legend</div>
+      <div class="legend-item"><span class="legend-symbol">||--o|</span> One-to-One (1:1)</div>
+      <div class="legend-item"><span class="legend-symbol">||--o{</span> One-to-Many (1:N)</div>
+      <div class="legend-item"><span class="legend-symbol">M:N</span> Many-to-Many (via repository_access junction)</div>
+      <div class="legend-item"><span class="legend-symbol">PK / FK</span> Primary Key / Foreign Key</div>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      er: {
+        useMaxWidth: false,
+        layoutDirection: 'TB',
+        entityPadding: 16
+      }
+    });
+
+    let panZoom;
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const svgElement = document.querySelector('#mermaid-target svg');
+        if (svgElement) {
+          panZoom = svgPanZoom(svgElement, {
+            zoomEnabled: true,
+            controlIconsEnabled: false,
+            fit: true,
+            center: true,
+            minZoom: 0.2,
+            maxZoom: 10
+          });
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>
